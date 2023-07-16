@@ -1,0 +1,17 @@
+body {
+  background-color: #222;
+  color: #fff;
+}
+
+label {
+  display: block;
+  margin-top: 0;
+  margin-bottom: 5px;
+}
+
+p {
+  margin-top: 2px;
+  margin-bottom: 2px;
+  /* color: #bf1650; */
+  color: yellow;
+}
