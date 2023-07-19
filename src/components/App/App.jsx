@@ -1,14 +1,17 @@
 import { useState } from "react";
+import { ThemeProvider } from "@emotion/react";
 import { useLocalStorage } from "hooks/useLocalStorage";
+import { lightTheme, darkTheme } from "../../constants";
+import { Container } from "./App.styled";
+import * as API from "../../services/api";
 import ContactForm from "components/ContactForm";
 import ContactList from "components/ContactList";
-
 import Filter from "components/Filter";
-import * as API from "./services/api";
 
-export const App = () => {
+const App = () => {
   const [contacts, setContacts] = useLocalStorage("contacts", []);
   const [filter, setFilter] = useState("");
+  const [isDark, setIsDark] = useState(false);
 
   // local create contact
   // const addContact = async (values) => {
@@ -70,21 +73,30 @@ export const App = () => {
     );
   };
 
+  const changeTheme = () => setIsDark(!isDark);
+
   return (
-    <>
-      <h2>Phonebook</h2>
-      <ContactForm contacts={contacts} onSubmitForm={addContact} />
-      <h2>Contacts</h2>
-      <Filter value={filter} onChangeFilter={handleChangeFilter} />
-      {contacts.length ? (
-        <ContactList
-          contacts={getFilteredContacts()}
-          removeItems={deleteContact}
-          updateContact={updateContact}
-        />
-      ) : (
-        <p>No contacts in Phonebook yet</p>
-      )}
-    </>
+    <ThemeProvider theme={isDark ? darkTheme : lightTheme}>
+      <Container>
+        <h2>Phonebook</h2>
+        <button type="button" onClick={changeTheme}>
+          toggle Theme
+        </button>
+        <ContactForm contacts={contacts} onSubmitForm={addContact} />
+        <h2>Contacts</h2>
+        <Filter value={filter} onChangeFilter={handleChangeFilter} />
+        {contacts.length ? (
+          <ContactList
+            contacts={getFilteredContacts()}
+            removeItems={deleteContact}
+            updateContact={updateContact}
+          />
+        ) : (
+          <p>No contacts in Phonebook yet</p>
+        )}
+      </Container>
+    </ThemeProvider>
   );
 };
+
+export default App;
