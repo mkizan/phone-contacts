@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { withHookFormMask } from "use-mask-input";
 import * as yup from "yup";
+import { useDispatch } from "react-redux";
+import { addContactThunk } from "store/contacts/operations";
 
 const schema = yup
   .object()
@@ -19,7 +21,9 @@ const schema = yup
   })
   .required();
 
-const ContactForm = ({ contacts, onSubmitForm }) => {
+const ContactForm = ({ contacts }) => {
+  const dispatch = useDispatch();
+
   const {
     register,
     handleSubmit,
@@ -44,7 +48,7 @@ const ContactForm = ({ contacts, onSubmitForm }) => {
       alert(`${data.phone} is already in contacts`);
       return;
     }
-    onSubmitForm(data);
+    dispatch(addContactThunk(data));
     reset();
   };
 
@@ -92,7 +96,6 @@ ContactForm.propTypes = {
       phone: PropTypes.string.isRequired,
     })
   ),
-  onSubmitForm: PropTypes.func.isRequired,
 };
 
 export default ContactForm;

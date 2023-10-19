@@ -1,15 +1,22 @@
 import PropTypes from "prop-types";
+import { useDispatch } from "react-redux";
+import { deleteContactThunk } from "store/contacts/operations";
 
-const ContactListItem = ({ contact, onDeleteItems, onUpdateContact }) => (
-  <>
-    <span>
-      {contact.name}: {contact.phone}
-    </span>
-    <button type="button" onClick={() => onDeleteItems(contact.id)}>
-      Delete
-    </button>
-  </>
-);
+const ContactListItem = ({ contact }) => {
+  const dispatch = useDispatch();
+  const handleDeleteContact = () => dispatch(deleteContactThunk(contact.id));
+
+  return (
+    <>
+      <span>
+        {contact.name}: {contact.phone}
+      </span>
+      <button type="button" onClick={handleDeleteContact}>
+        Delete
+      </button>
+    </>
+  );
+};
 
 ContactListItem.propTypes = {
   contact: PropTypes.shape({
@@ -17,7 +24,6 @@ ContactListItem.propTypes = {
     name: PropTypes.string.isRequired,
     phone: PropTypes.string.isRequired,
   }),
-  onDeleteItems: PropTypes.func.isRequired,
 };
 
 export default ContactListItem;
